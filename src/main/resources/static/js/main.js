@@ -7,9 +7,11 @@ var messageForm = document.querySelector('#messageForm');
 var messageInput = document.querySelector('#message');
 var messageArea = document.querySelector('#messageArea');
 var connectingElement = document.querySelector('.connecting');
+var typingIndicator = document.getElementById('typing-indicator'); 
 
 var stompClient = null;
 var username = null;
+var typingTimeout = null; 
 
 var colors = [
     '#2196F3', '#32c787', '#00BCD4', '#ff5652',
@@ -31,12 +33,10 @@ function connect(event) {
     event.preventDefault();
 }
 
-
 function onConnected() {
-    // Subscribe to the Public Topic
     stompClient.subscribe('/topic/public', onMessageReceived);
+    stompClient.subscribe('/topic/typing', onTypingReceived); 
 
-    // Tell your username to the server
     stompClient.send("/app/chat.addUser",
         {},
         JSON.stringify({sender: username, type: 'JOIN'})
@@ -45,12 +45,10 @@ function onConnected() {
     connectingElement.classList.add('hidden');
 }
 
-
 function onError(error) {
     connectingElement.textContent = 'Could not connect to WebSocket server. Please refresh this page to try again!';
     connectingElement.style.color = 'red';
 }
-
 
 function sendMessage(event) {
     var messageContent = messageInput.value.trim();
@@ -65,6 +63,7 @@ function sendMessage(event) {
     }
     event.preventDefault();
 }
+
 function onMessageReceived(payload) {
     var message = JSON.parse(payload.body);
 
@@ -106,6 +105,7 @@ function onMessageReceived(payload) {
     messageArea.appendChild(messageElement);
     messageArea.scrollTop = messageArea.scrollHeight;
 }
+
 function getAvatarColor(messageSender) {
     var hash = 0;
     for (var i = 0; i < messageSender.length; i++) {
@@ -115,5 +115,31 @@ function getAvatarColor(messageSender) {
     return colors[index];
 }
 
-usernameForm.addEventListener('submit', connect, true)
-messageForm.addEventListener('submit', sendMessage, true)
+function sendTypingNotification() {
+    stompClient.send('/app/chat.typing', {}, JSON.stringify({ sender: username }));
+}
+
+function handleTypingIndicator(message) {
+    typingIndicator.innerText = `${message.body} is typing...`;
+    typingIndicator.style.display = 'block';
+    clearTimeout(typingTimeout);
+    typingTimeout = setTimeout(() => {
+        typingIndicator.style.display = 'none';
+    }, 2000); 
+}
+
+function onTypingReceived(payload) {
+    var message = JSON.parse(payload.body);
+    handleTypingIndicator(message);
+}
+
+messageInput.addEventListener('input', () => {
+    sendTypingNotification();
+    clearTimeout(typingTimeout);
+    typingTimeout = setTimeout(() => {
+        typingIndicator.style.display = 'none';
+    }, 2000); 
+});
+
+usernameForm.addEventListener('submit', connect, true);
+messageForm.addEventListener('submit', sendMessage, true);
