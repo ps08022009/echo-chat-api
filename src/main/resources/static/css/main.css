@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 
-html,body {
+html, body {
     height: 100%;
     overflow: hidden;
 }
@@ -121,7 +121,6 @@ button.accent {
     margin-top: 10px;
 }
 
-
 #chat-page {
     position: relative;
     height: 100%;
@@ -137,6 +136,8 @@ button.accent {
     height: calc(100% - 60px);
     max-height: 600px;
     position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 #chat-page ul {
@@ -145,8 +146,8 @@ button.accent {
     margin: 0;
     overflow: auto;
     overflow-y: scroll;
-    padding: 0 20px 0px 20px;
-    height: calc(100% - 150px);
+    padding: 0 20px;
+    height: calc(100% - 120px); /* Adjusted for typing indicator */
 }
 
 #chat-page #messageForm {
@@ -239,9 +240,23 @@ button.accent {
     width: 100%;
 }
 
+.typing-indicator {
+    display: none; /* Hidden by default */
+    padding: 8px 12px;
+    background-color: #333;
+    color: #fff;
+    font-size: 14px;
+    border-radius: 5px;
+    margin: 5px;
+    position: absolute;
+    bottom: 60px; /* Position above the input form */
+    left: 0;
+    right: 0;
+    text-align: center;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+}
 
 @media screen and (max-width: 730px) {
-
     .chat-container {
         margin-left: 10px;
         margin-right: 10px;
@@ -262,7 +277,7 @@ button.accent {
     }
 
     #chat-page ul {
-        height: calc(100% - 120px);
+        height: calc(100% - 120px); /* Adjusted for typing indicator */
     }
 
     #messageForm .input-group button {
@@ -284,49 +299,4 @@ button.accent {
     .chat-header h2 {
         font-size: 1.1em;
     }
-}
-.typing-indicator {
-    display: none; /* Hidden by default */
-    padding: 8px 12px;
-    background-color: #333;
-    color: #fff;
-    font-size: 14px;
-    border-radius: 5px;
-    margin: 5px;
-    position: relative;
-    text-align: center;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
-}
-
-/* Ensure typing indicator appears above input */
-#chat-page {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-#chat-page .chat-container {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-}
-
-#chat-page ul {
-    flex: 1;
-    overflow-y: auto;
-}
-
-#messageForm {
-    margin: 0;
-    padding: 10px;
-    border-top: 1px solid #ddd;
-}
-
-.input-group input {
-    width: calc(100% - 85px);
-    margin-right: 5px;
-}
-
-.input-group button {
-    width: 80px;
 }
