@@ -1,10 +1,11 @@
+/* General Reset */
 * {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
 
-html,body {
+html, body {
     height: 100%;
     overflow: hidden;
 }
@@ -17,10 +18,11 @@ body {
     font-size: 1rem;
     line-height: 1.58;
     color: #333;
-    background-color: #dcf9ff;
+    background-color: #f0f4f8; /* Softer background color */
     height: 100%;
 }
 
+/* Utility Classes */
 .clearfix:after {
     display: block;
     content: "";
@@ -31,15 +33,18 @@ body {
     display: none;
 }
 
+/* Forms and Inputs */
 .form-control {
     width: 100%;
     min-height: 38px;
     font-size: 15px;
-    border: 1px solid #c8c8c8;
+    border: 1px solid #ddd; /* Slightly lighter border */
+    border-radius: 4px; /* Rounded corners */
+    padding: 8px; /* Better padding */
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px; /* Slightly more space */
 }
 
 input {
@@ -47,19 +52,30 @@ input {
     outline: none;
 }
 
+/* Headings */
 h1, h2, h3, h4, h5, h6 {
     margin-top: 20px;
     margin-bottom: 20px;
 }
 
 h1 {
-    font-size: 1.7em;
+    font-size: 2em; /* Larger font size for headings */
+    font-weight: 600; /* Heavier weight for emphasis */
+    color: #333; /* Darker color for contrast */
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1); /* Subtle shadow */
 }
 
+/* Links */
 a {
-    color: #6db33f;
+    color: #007bff; /* Modern blue color */
+    text-decoration: none;
 }
 
+a:hover {
+    text-decoration: underline; /* Underline on hover */
+}
+
+/* Buttons */
 button {
     box-shadow: none;
     border: 1px solid transparent;
@@ -69,58 +85,61 @@ button {
     white-space: nowrap;
     vertical-align: middle;
     padding: 0.6rem 1rem;
-    border-radius: 2px;
-    transition: all 0.2s ease-in-out;
+    border-radius: 4px; /* Rounded corners */
+    transition: all 0.3s ease-in-out; /* Smooth transitions */
     cursor: pointer;
     min-height: 38px;
 }
 
 button.default {
-    background-color: #e8e8e8;
+    background-color: #f8f9fa; /* Light background */
     color: #333;
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle shadow */
 }
 
 button.primary {
-    background-color: #6db33f;
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12);
+    background-color: #007bff; /* Primary color */
     color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle shadow */
+}
+
+button.primary:hover {
+    background-color: #0056b3; /* Darker shade on hover */
 }
 
 button.accent {
-    background-color: #6db33f;
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12);
+    background-color: #28a745; /* Accent color */
     color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle shadow */
 }
 
+button.accent:hover {
+    background-color: #218838; /* Darker shade on hover */
+}
+
+/* Layouts */
 #username-page {
     text-align: center;
 }
 
 .username-page-container {
     background: #fff;
-    box-shadow: 0 1px 11px rgba(0, 0, 0, 0.27);
-    border-radius: 2px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Deeper shadow */
+    border-radius: 8px; /* More rounded corners */
     width: 100%;
     max-width: 500px;
-    display: inline-block;
-    margin-top: 42px;
-    vertical-align: middle;
-    position: relative;
-    padding: 35px 55px 35px;
-    min-height: 250px;
+    margin-top: 50px;
+    padding: 40px 50px;
     position: absolute;
     top: 50%;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    margin-top: -160px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-height: 250px;
 }
 
 .username-page-container .username-submit {
-    margin-top: 10px;
+    margin-top: 20px;
 }
-
 
 #chat-page {
     position: relative;
@@ -129,41 +148,36 @@ button.accent {
 
 .chat-container {
     max-width: 700px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 30px auto;
     background-color: #fff;
-    box-shadow: 0 1px 11px rgba(0, 0, 0, 0.27);
-    margin-top: 30px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Deeper shadow */
     height: calc(100% - 60px);
     max-height: 600px;
     position: relative;
+    border-radius: 8px; /* Rounded corners */
 }
 
 #chat-page ul {
     list-style-type: none;
-    background-color: #FFF;
+    background-color: #fff;
     margin: 0;
-    overflow: auto;
     overflow-y: scroll;
-    padding: 0 20px 0px 20px;
+    padding: 10px 20px;
     height: calc(100% - 150px);
-}
-
-#chat-page #messageForm {
-    padding: 20px;
 }
 
 #chat-page ul li {
     line-height: 1.5rem;
     padding: 10px 20px;
     margin: 0;
-    border-bottom: 1px solid #f4f4f4;
+    border-bottom: 1px solid #eee; /* Lighter border color */
 }
 
 #chat-page ul li p {
     margin: 0;
 }
 
+/* Event Messages */
 #chat-page .event-message {
     width: 100%;
     text-align: center;
@@ -171,31 +185,33 @@ button.accent {
 }
 
 #chat-page .event-message p {
-    color: #777;
+    color: #888; /* Lighter gray for event messages */
     font-size: 14px;
     word-wrap: break-word;
 }
 
+/* Chat Messages */
 #chat-page .chat-message {
-    padding-left: 68px;
+    padding-left: 60px; /* Adjusted padding */
     position: relative;
 }
 
 #chat-page .chat-message i {
     position: absolute;
-    width: 42px;
-    height: 42px;
+    width: 48px; /* Slightly larger */
+    height: 48px; /* Slightly larger */
     overflow: hidden;
     left: 10px;
     display: inline-block;
     vertical-align: middle;
-    font-size: 18px;
-    line-height: 42px;
+    font-size: 20px;
+    line-height: 48px;
     color: #fff;
     text-align: center;
     border-radius: 50%;
     font-style: normal;
     text-transform: uppercase;
+    background-color: #007bff; /* Consistent with link color */
 }
 
 #chat-page .chat-message span {
@@ -204,9 +220,10 @@ button.accent {
 }
 
 #chat-page .chat-message p {
-    color: #43464b;
+    color: #555; /* Slightly lighter gray for text */
 }
 
+/* Form */
 #messageForm .input-group input {
     float: left;
     width: calc(100% - 85px);
@@ -219,6 +236,7 @@ button.accent {
     margin-left: 5px;
 }
 
+/* Chat Header */
 .chat-header {
     text-align: center;
     padding: 15px;
@@ -227,25 +245,23 @@ button.accent {
 
 .chat-header h2 {
     margin: 0;
-    font-weight: 500;
+    font-weight: 600; /* Heavier weight */
 }
 
+/* Connecting Status */
 .connecting {
     padding-top: 5px;
     text-align: center;
-    color: #777;
+    color: #888; /* Lighter gray */
     position: absolute;
     top: 65px;
     width: 100%;
 }
 
-
+/* Responsive Design */
 @media screen and (max-width: 730px) {
-
     .chat-container {
-        margin-left: 10px;
-        margin-right: 10px;
-        margin-top: 10px;
+        margin: 10px;
     }
 }
 
@@ -256,8 +272,7 @@ button.accent {
 
     .username-page-container {
         width: auto;
-        margin-left: 15px;
-        margin-right: 15px;
+        margin: 15px;
         padding: 25px;
     }
 
