@@ -12,6 +12,7 @@ var typingIndicator = document.getElementById('typing-indicator');
 var stompClient = null;
 var username = null;
 var typingTimeout = null; 
+var profilePicture = null; // Added to store the profile picture
 
 var colors = [
     '#2196F3', '#32c787', '#00BCD4', '#ff5652',
@@ -20,8 +21,9 @@ var colors = [
 
 function connect(event) {
     username = document.querySelector('#name').value.trim();
+    profilePicture = document.querySelector('#profilePic').files[0]; // Get the profile picture file
 
-    if(username) {
+    if (username) {
         usernamePage.classList.add('hidden');
         chatPage.classList.remove('hidden');
 
@@ -52,11 +54,12 @@ function onError(error) {
 
 function sendMessage(event) {
     var messageContent = messageInput.value.trim();
-    if(messageContent && stompClient) {
+    if (messageContent && stompClient) {
         var chatMessage = {
             sender: username,
             content: messageInput.value,
-            type: 'CHAT'
+            type: 'CHAT',
+            profilePicture: profilePicture ? URL.createObjectURL(profilePicture) : null // Include the profile picture URL
         };
         stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
         messageInput.value = '';
@@ -80,10 +83,10 @@ function onMessageReceived(payload) {
     } else {
         messageElement.classList.add('chat-message');
 
-        var avatarElement = document.createElement('i');
-        var avatarText = document.createTextNode(message.sender[0]);
-        avatarElement.appendChild(avatarText);
-        avatarElement.style['background-color'] = getAvatarColor(message.sender);
+        var avatarElement = document.createElement('img');
+        avatarElement.src = message.profilePicture || getAvatarColor(message.sender); // Use profile picture or default color
+        avatarElement.alt = message.sender;
+        avatarElement.className = 'avatar'; // Add class for styling
 
         messageElement.appendChild(avatarElement);
 
@@ -107,7 +110,6 @@ function onMessageReceived(payload) {
     messageArea.appendChild(messageElement);
     messageArea.scrollTop = messageArea.scrollHeight;
 }
-
 
 function getAvatarColor(messageSender) {
     var hash = 0;
