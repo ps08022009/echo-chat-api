@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 
-html, body {
+html,body {
     height: 100%;
     overflow: hidden;
 }
@@ -36,8 +36,6 @@ body {
     min-height: 38px;
     font-size: 15px;
     border: 1px solid #c8c8c8;
-    border-radius: 4px; /* Rounded corners */
-    padding: 10px;
 }
 
 .form-group {
@@ -71,8 +69,8 @@ button {
     white-space: nowrap;
     vertical-align: middle;
     padding: 0.6rem 1rem;
-    border-radius: 4px; /* Rounded corners */
-    transition: all 0.3s ease; /* Smooth transition */
+    border-radius: 2px;
+    transition: all 0.2s ease-in-out;
     cursor: pointer;
     min-height: 38px;
 }
@@ -80,21 +78,19 @@ button {
 button.default {
     background-color: #e8e8e8;
     color: #333;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12);
 }
 
 button.primary {
     background-color: #6db33f;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12);
     color: #fff;
-    border: none;
 }
 
 button.accent {
     background-color: #6db33f;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12);
     color: #fff;
-    border: none;
 }
 
 #username-page {
@@ -104,12 +100,14 @@ button.accent {
 .username-page-container {
     background: #fff;
     box-shadow: 0 1px 11px rgba(0, 0, 0, 0.27);
-    border-radius: 8px; /* Rounded corners */
+    border-radius: 2px;
     width: 100%;
     max-width: 500px;
     display: inline-block;
     margin-top: 42px;
-    padding: 35px 55px;
+    vertical-align: middle;
+    position: relative;
+    padding: 35px 55px 35px;
     min-height: 250px;
     position: absolute;
     top: 50%;
@@ -117,12 +115,12 @@ button.accent {
     right: 0;
     margin: 0 auto;
     margin-top: -160px;
-    text-align: center; /* Center text */
 }
 
 .username-page-container .username-submit {
-    margin-top: 20px; /* Increased margin for spacing */
+    margin-top: 10px;
 }
+
 
 #chat-page {
     position: relative;
@@ -138,10 +136,7 @@ button.accent {
     margin-top: 30px;
     height: calc(100% - 60px);
     max-height: 600px;
-    display: flex;
-    flex-direction: column;
-    border-radius: 8px; /* Rounded corners */
-    overflow: hidden;
+    position: relative;
 }
 
 #chat-page ul {
@@ -150,14 +145,12 @@ button.accent {
     margin: 0;
     overflow: auto;
     overflow-y: scroll;
-    padding: 0 20px;
-    height: calc(100% - 120px); /* Adjusted for typing indicator */
+    padding: 0 20px 0px 20px;
+    height: calc(100% - 150px);
 }
 
 #chat-page #messageForm {
     padding: 20px;
-    border-top: 1px solid #ececec;
-    background-color: #f9f9f9; /* Slightly different background color */
 }
 
 #chat-page ul li {
@@ -165,8 +158,6 @@ button.accent {
     padding: 10px 20px;
     margin: 0;
     border-bottom: 1px solid #f4f4f4;
-    border-radius: 8px; /* Rounded corners for messages */
-    background-color: #fafafa; /* Light background for messages */
 }
 
 #chat-page ul li p {
@@ -190,7 +181,7 @@ button.accent {
     position: relative;
 }
 
-#chat-page .chat-message img {
+#chat-page .chat-message i {
     position: absolute;
     width: 42px;
     height: 42px;
@@ -198,8 +189,13 @@ button.accent {
     left: 10px;
     display: inline-block;
     vertical-align: middle;
-    border-radius: 50%; /* Rounded profile picture */
-    object-fit: cover; /* Crop and fit the image */
+    font-size: 18px;
+    line-height: 42px;
+    color: #fff;
+    text-align: center;
+    border-radius: 50%;
+    font-style: normal;
+    text-transform: uppercase;
 }
 
 #chat-page .chat-message span {
@@ -227,8 +223,6 @@ button.accent {
     text-align: center;
     padding: 15px;
     border-bottom: 1px solid #ececec;
-    background-color: #fafafa; /* Slightly different background color */
-    border-radius: 8px; /* Rounded corners */
 }
 
 .chat-header h2 {
@@ -245,23 +239,9 @@ button.accent {
     width: 100%;
 }
 
-.typing-indicator {
-    display: none; /* Hidden by default */
-    padding: 8px 12px;
-    background-color: #333;
-    color: #fff;
-    font-size: 14px;
-    border-radius: 5px;
-    margin: 5px;
-    position: absolute;
-    bottom: 60px; /* Position above the input form */
-    left: 0;
-    right: 0;
-    text-align: center;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
-}
 
 @media screen and (max-width: 730px) {
+
     .chat-container {
         margin-left: 10px;
         margin-right: 10px;
@@ -282,7 +262,7 @@ button.accent {
     }
 
     #chat-page ul {
-        height: calc(100% - 120px); /* Adjusted for typing indicator */
+        height: calc(100% - 120px);
     }
 
     #messageForm .input-group button {
@@ -304,12 +284,4 @@ button.accent {
     .chat-header h2 {
         font-size: 1.1em;
     }
-}
-#profilePicPreview{
-    display: block;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin: 0 auto; 
 }
