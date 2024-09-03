@@ -1,4 +1,4 @@
-package com.pranav.realtime_message_api.chat;
+package com.pranav.echo_chat_api.chat;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;

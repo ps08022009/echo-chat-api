@@ -1,4 +1,4 @@
-package com.pranav.realtime_message_api.config;
+package com.pranav.echo_chat_api.config;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -6,8 +6,8 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
-import com.pranav.realtime_message_api.chat.ChatMessage;
-import com.pranav.realtime_message_api.chat.MessageType;
+import com.pranav.echo_chat_api.chat.ChatMessage;
+import com.pranav.echo_chat_api.chat.MessageType;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
