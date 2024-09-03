@@ -93,8 +93,13 @@ function onMessageReceived(payload) {
         usernameElement.appendChild(usernameText);
         messageElement.appendChild(usernameElement);
 
-        const audio = new Audio("/sounds/BBM-Tone-Notification.mp3");
-        audio.play();
+        if (message.sender != username){
+            const audio = new Audio("/sounds/BBM-Tone-Notification.mp3");
+            audio.play();
+        }
+        else {
+            return;
+        }
     }
 
     var textElement = document.createElement('p');
