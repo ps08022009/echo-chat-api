@@ -69,7 +69,6 @@ function onMessageReceived(payload) {
 
     var messageElement = document.createElement('li');
 
-    // Check if the message sender is the current user
     var displayName = (message.sender === username) ? 'Me' : message.sender;
 
     if (message.type === 'JOIN') {
