@@ -7,39 +7,19 @@ var messageForm = document.querySelector('#messageForm');
 var messageInput = document.querySelector('#message');
 var messageArea = document.querySelector('#messageArea');
 var connectingElement = document.querySelector('.connecting');
-var profilePicInput = document.querySelector('#profilePic');
-var profilePicPreview = document.querySelector('#profilePicPreview');
+var typingIndicator = document.getElementById('typing-indicator');
 
 var stompClient = null;
 var username = null;
-var profilePicture = null;
+var typingTimeout = null;
 
 var colors = [
     '#2196F3', '#32c787', '#00BCD4', '#ff5652',
     '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
 ];
 
-// File input change event listener for profile picture preview
-profilePicInput.addEventListener('change', function(event) {
-    var file = event.target.files[0];
-    if (file) {
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            profilePicPreview.src = e.target.result;
-            profilePicPreview.style.display = 'block'; // Show the preview
-        };
-        reader.readAsDataURL(file); // Read file as data URL
-    } else {
-        profilePicPreview.style.display = 'none'; // Hide if no file is selected
-    }
-});
-
 function connect(event) {
     username = document.querySelector('#name').value.trim();
-    profilePicture = profilePicInput.files[0]; // Get the profile picture file
-
-    console.log('Username:', username);
-    console.log('Profile Picture:', profilePicture);
 
     if (username) {
         usernamePage.classList.add('hidden');
@@ -47,19 +27,17 @@ function connect(event) {
 
         var socket = new SockJS('/ws');
         stompClient = Stomp.over(socket);
-
         stompClient.connect({}, onConnected, onError);
     }
+
     event.preventDefault();
 }
 
 function onConnected() {
     stompClient.subscribe('/topic/public', onMessageReceived);
+    stompClient.subscribe('/topic/typing', onTypingReceived);
 
-    stompClient.send("/app/chat.addUser",
-        {},
-        JSON.stringify({sender: username, type: 'JOIN'})
-    );
+    stompClient.send("/app/chat.addUser", {}, JSON.stringify({ sender: username, type: 'JOIN' }));
 
     connectingElement.classList.add('hidden');
 }
@@ -71,25 +49,23 @@ function onError(error) {
 
 function sendMessage(event) {
     var messageContent = messageInput.value.trim();
+
     if (messageContent && stompClient) {
         var chatMessage = {
             sender: username,
             content: messageInput.value,
-            type: 'CHAT',
-            profilePicture: profilePicture ? URL.createObjectURL(profilePicture) : null // Use object URL if a profile picture is set
+            type: 'CHAT'
         };
-        console.log('Sending message:', chatMessage);
+
         stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
         messageInput.value = '';
     }
+
     event.preventDefault();
 }
 
 function onMessageReceived(payload) {
     var message = JSON.parse(payload.body);
-
-    console.log('Received message:', message);
-
     var messageElement = document.createElement('li');
     var displayName = (message.sender === username) ? 'Me' : message.sender;
 
@@ -102,11 +78,10 @@ function onMessageReceived(payload) {
     } else {
         messageElement.classList.add('chat-message');
 
-        var avatarElement = document.createElement('img');
-        avatarElement.src = message.profilePicture || getAvatarColor(message.sender); // Use default color if no profile picture
-        avatarElement.alt = message.sender;
-        avatarElement.className = 'avatar'; // Add class for styling
-
+        var avatarElement = document.createElement('i');
+        var avatarText = document.createTextNode(message.sender[0]);
+        avatarElement.appendChild(avatarText);
+        avatarElement.style['background-color'] = getAvatarColor(message.sender);
         messageElement.appendChild(avatarElement);
 
         var usernameElement = document.createElement('span');
@@ -114,17 +89,11 @@ function onMessageReceived(payload) {
         usernameElement.appendChild(usernameText);
         messageElement.appendChild(usernameElement);
 
-        if (message.sender !== username) {
-            let audio = new Audio('/sounds/BBM-Tone-Notification.mp3');
-            audio.play();
-        }
+        var textElement = document.createElement('p');
+        var messageText = document.createTextNode(message.content);
+        textElement.appendChild(messageText);
+        messageElement.appendChild(textElement);
     }
-
-    var textElement = document.createElement('p');
-    var messageText = document.createTextNode(message.content);
-    textElement.appendChild(messageText);
-
-    messageElement.appendChild(textElement);
 
     messageArea.appendChild(messageElement);
     messageArea.scrollTop = messageArea.scrollHeight;
@@ -138,6 +107,32 @@ function getAvatarColor(messageSender) {
     var index = Math.abs(hash % colors.length);
     return colors[index];
 }
+
+function sendTypingNotification() {
+    stompClient.send('/app/chat.typing', {}, JSON.stringify({ sender: username }));
+}
+
+function handleTypingIndicator(message) {
+    typingIndicator.innerText = `${message.body} is typing...`;
+    typingIndicator.style.display = 'block';
+    clearTimeout(typingTimeout);
+    typingTimeout = setTimeout(() => {
+        typingIndicator.style.display = 'none';
+    }, 2000);
+}
+
+function onTypingReceived(payload) {
+    var message = JSON.parse(payload.body);
+    handleTypingIndicator(message);
+}
+
+messageInput.addEventListener('input', () => {
+    sendTypingNotification();
+    clearTimeout(typingTimeout);
+    typingTimeout = setTimeout(() => {
+        typingIndicator.style.display = 'none';
+    }, 2000);
+});
 
 usernameForm.addEventListener('submit', connect, true);
 messageForm.addEventListener('submit', sendMessage, true);
