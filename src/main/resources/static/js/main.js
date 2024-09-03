@@ -7,21 +7,36 @@ var messageForm = document.querySelector('#messageForm');
 var messageInput = document.querySelector('#message');
 var messageArea = document.querySelector('#messageArea');
 var connectingElement = document.querySelector('.connecting');
-var typingIndicator = document.getElementById('typing-indicator'); 
+var profilePicInput = document.querySelector('#profilePic');
+var profilePicPreview = document.querySelector('#profilePicPreview');
 
 var stompClient = null;
 var username = null;
-var typingTimeout = null; 
-var profilePicture = null; // Added to store the profile picture
+var profilePicture = null;
 
 var colors = [
     '#2196F3', '#32c787', '#00BCD4', '#ff5652',
     '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
 ];
 
+// File input change event listener for profile picture preview
+profilePicInput.addEventListener('change', function(event) {
+    var file = event.target.files[0];
+    if (file) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            profilePicPreview.src = e.target.result;
+            profilePicPreview.style.display = 'block'; // Show the preview
+        };
+        reader.readAsDataURL(file);
+    } else {
+        profilePicPreview.style.display = 'none'; // Hide if no file is selected
+    }
+});
+
 function connect(event) {
     username = document.querySelector('#name').value.trim();
-    profilePicture = document.querySelector('#profilePic').files[0]; // Get the profile picture file
+    profilePicture = profilePicInput.files[0]; // Get the profile picture file
 
     if (username) {
         usernamePage.classList.add('hidden');
@@ -37,12 +52,11 @@ function connect(event) {
 
 function onConnected() {
     stompClient.subscribe('/topic/public', onMessageReceived);
-    stompClient.subscribe('/topic/typing', onTypingReceived); 
 
     stompClient.send("/app/chat.addUser",
         {},
         JSON.stringify({sender: username, type: 'JOIN'})
-    )
+    );
 
     connectingElement.classList.add('hidden');
 }
@@ -71,7 +85,6 @@ function onMessageReceived(payload) {
     var message = JSON.parse(payload.body);
 
     var messageElement = document.createElement('li');
-
     var displayName = (message.sender === username) ? 'Me' : message.sender;
 
     if (message.type === 'JOIN') {
@@ -119,32 +132,6 @@ function getAvatarColor(messageSender) {
     var index = Math.abs(hash % colors.length);
     return colors[index];
 }
-
-function sendTypingNotification() {
-    stompClient.send('/app/chat.typing', {}, JSON.stringify({ sender: username }));
-}
-
-function handleTypingIndicator(message) {
-    typingIndicator.innerText = `${message.body} is typing...`;
-    typingIndicator.style.display = 'block';
-    clearTimeout(typingTimeout);
-    typingTimeout = setTimeout(() => {
-        typingIndicator.style.display = 'none';
-    }, 2000); 
-}
-
-function onTypingReceived(payload) {
-    var message = JSON.parse(payload.body);
-    handleTypingIndicator(message);
-}
-
-messageInput.addEventListener('input', () => {
-    sendTypingNotification();
-    clearTimeout(typingTimeout);
-    typingTimeout = setTimeout(() => {
-        typingIndicator.style.display = 'none';
-    }, 2000); 
-});
 
 usernameForm.addEventListener('submit', connect, true);
 messageForm.addEventListener('submit', sendMessage, true);
