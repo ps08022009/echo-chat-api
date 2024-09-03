@@ -171,7 +171,7 @@ button.accent:hover {
     margin: 0;
     overflow-y: auto;
     padding: 20px;
-    height: calc(100% - 150px);
+    height: calc(100% - 160px); /* Adjusted height for more space */
 }
 
 #chat-page ul li {
@@ -195,6 +195,7 @@ button.accent:hover {
 #chat-page ul li.received {
     background-color: #e5e5ea; /* Light gray for received messages */
     color: #333;
+    border-bottom-left-radius: 0; /* Remove the bottom-left border-radius */
 }
 
 #chat-page ul li:before {
@@ -262,18 +263,24 @@ button.accent:hover {
 }
 
 /* Form */
+#messageForm .input-group {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px; /* Added padding for better spacing */
+    border-top: 1px solid #e2e6ea;
+    background-color: #fff;
+}
+
 #messageForm .input-group input {
-    float: left;
-    width: calc(100% - 90px);
+    width: calc(100% - 100px); /* Adjusted width for better spacing */
     border-radius: 6px;
     border: 1px solid #ddd;
 }
 
 #messageForm .input-group button {
-    float: left;
     width: 85px;
     height: 40px;
-    margin-left: 5px;
+    margin-left: 10px; /* Added margin for spacing */
 }
 
 /* Chat Header */
