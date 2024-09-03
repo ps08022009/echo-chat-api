@@ -73,7 +73,7 @@ function sendMessage(event) {
             sender: username,
             content: messageInput.value,
             type: 'CHAT',
-            profilePicture: profilePicture ? URL.createObjectURL(profilePicture) : null // Include the profile picture URL
+            profilePicture: profilePicture ? URL.createObjectURL(profilePicture) : null // Use null if no profile picture
         };
         stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
         messageInput.value = '';
@@ -97,7 +97,7 @@ function onMessageReceived(payload) {
         messageElement.classList.add('chat-message');
 
         var avatarElement = document.createElement('img');
-        avatarElement.src = message.profilePicture || getAvatarColor(message.sender); // Use profile picture or default color
+        avatarElement.src = message.profilePicture || getAvatarColor(message.sender); // Use getAvatarColor if no profile picture
         avatarElement.alt = message.sender;
         avatarElement.className = 'avatar'; // Add class for styling
 
@@ -125,12 +125,15 @@ function onMessageReceived(payload) {
 }
 
 function getAvatarColor(messageSender) {
+    if (!messageSender) {
+        return '#CCCCCC'; // Return a neutral color if no sender
+    }
     var hash = 0;
     for (var i = 0; i < messageSender.length; i++) {
         hash = 31 * hash + messageSender.charCodeAt(i);
     }
     var index = Math.abs(hash % colors.length);
-    return colors[index];
+    return colors[index]; // Return color based on hash
 }
 
 usernameForm.addEventListener('submit', connect, true);
