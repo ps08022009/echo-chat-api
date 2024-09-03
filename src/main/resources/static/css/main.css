@@ -285,3 +285,48 @@ button.accent {
         font-size: 1.1em;
     }
 }
+.typing-indicator {
+    display: none; /* Hidden by default */
+    padding: 8px 12px;
+    background-color: #333;
+    color: #fff;
+    font-size: 14px;
+    border-radius: 5px;
+    margin: 5px;
+    position: relative;
+    text-align: center;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Ensure typing indicator appears above input */
+#chat-page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+#chat-page .chat-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+#chat-page ul {
+    flex: 1;
+    overflow-y: auto;
+}
+
+#messageForm {
+    margin: 0;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+}
+
+.input-group input {
+    width: calc(100% - 85px);
+    margin-right: 5px;
+}
+
+.input-group button {
+    width: 80px;
+}
