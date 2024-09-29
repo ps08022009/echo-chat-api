@@ -218,6 +218,13 @@ button.accent {
     height: 38px;
     margin-left: 5px;
 }
+
+.chat-header {
+    text-align: center;
+    padding: 15px;
+    border-bottom: 1px solid #ececec;
+}
+
 .chat-header h2 {
     margin: 0;
     font-weight: 500;
